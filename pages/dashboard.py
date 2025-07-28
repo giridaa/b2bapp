@@ -37,7 +37,7 @@ st.title("セールスアシスト")
 #--サイドバー1--
 st.sidebar.subheader("1.アプローチ候補HOT見込み客閾値設定")
 
-#--HOT率選択スライダ--
+#--HOT予測確率選択スライダ--
 selected_threshold_value = st.sidebar.slider(
     "HOT閾値を選択してください",
     min_value = 0.1,
@@ -47,19 +47,19 @@ selected_threshold_value = st.sidebar.slider(
     format = "%.1f" # 表示形式を小数点第一位まで
 )
 
-# スライダーで選択された値に基づいてHOT率のラベルを動的に表示
+# スライダーで選択された値に基づいてHOT予測確率のラベルを動的に表示
 # 0.1刻みの場合、例えば0.4を選択したら「40%以下」とする
 if selected_threshold_value <= 0.4:
     selected_hot_rate_label = f"{int(selected_threshold_value * 100)}%以下"
 else:
     selected_hot_rate_label = f"{int(selected_threshold_value * 100)}%以上"
 
-# HOT率でのフィルタリング
+# HOT予測確率でのフィルタリング
 # selected_threshold_value を使ってフィルタリング
 if selected_threshold_value <= 0.4:
-    df_filtered = df[df["HOT率"] <= selected_threshold_value]
+    df_filtered = df[df["HOT予測確率"] <= selected_threshold_value]
 else:
-    df_filtered = df[df["HOT率"] >= selected_threshold_value]
+    df_filtered = df[df["HOT予測確率"] >= selected_threshold_value]
 
 
 #--集計軸の選択
@@ -80,14 +80,14 @@ option = st.sidebar.radio("表示形式を選択してください:", ["表", "�
 
 # ダッシュボード表示
 #--見出し：アプローチするHOT見込み客抽出--
-st.markdown('''### 1.アプローチ候補のHOT見込み客抽出''')
-st.markdown(f"**選択したHOT率: <span style='color:red; text-decoration: underline;'>{selected_hot_rate_label}</span>以上のリード**", unsafe_allow_html=True)
+st.markdown('''### 1.アプローチ候補のHOT見込み客抽出 :mag:''')
+st.markdown(f"**選択したHOT予測確率: <span style='color:red; text-decoration: underline;'>{selected_hot_rate_label}</span>以上のリード**", unsafe_allow_html=True)
 
 # フィルタリング後のデータフレームと該当レコード数を表示
 st.write(f"**該当リード数: <span style='color:red; text-decoration: underline;'>{len(df_filtered)}</span>人**", unsafe_allow_html=True)
 #--フィルタリングで表示する項目を設定--
-selected_columns_df = df_filtered[["HOT率", "企業名", "姓", "名", "所属部署", "職種", "役職"]]
-sorted_df = selected_columns_df.sort_values(by = "HOT率", ascending = False) # HOT率で降順ソート
+selected_columns_df = df_filtered[["HOT予測確率", "企業名", "姓", "名", "所属部署", "職種", "役職"]]
+sorted_df = selected_columns_df.sort_values(by = "HOT予測確率", ascending = False) # HOT予測確率で降順ソート
 st.dataframe(sorted_df.head())
 
 # 集計軸ごとのサマリー表示
@@ -96,7 +96,7 @@ if aggregation_axis and not df_filtered.empty:
 
         # 選択された集計軸でグループ化し、レコード数のみを計算
     summary_df = df_filtered.groupby(aggregation_axis).agg(
-        レコード数=('HOT率', 'count') # レコード数のみ
+        レコード数=('HOT予測確率', 'count') # レコード数のみ
     ).reset_index()
 
     # ソート（任意）
@@ -120,7 +120,7 @@ if aggregation_axis and not df_filtered.empty:
         st.pyplot(fig)
 
 else:
-    st.info("選択されたHOT率の範囲では、表示するデータがありません。")
+    st.info("選択されたHOT予測確率の範囲では、表示するデータがありません。")
 #--------------------------------------------------
 
 
@@ -129,7 +129,7 @@ st.sidebar.subheader("2.アプローチするHOT見込み客選択")
 
 #--HOT見込み客選択スライダ--
 #--降順ソートされたデータフレームの行数を取得
-sorted_attack_df = df_filtered.sort_values(by = "HOT率", ascending = False) # HOT率で降順ソート
+sorted_attack_df = df_filtered.sort_values(by = "HOT予測確率", ascending = False) # HOT予測確率で降順ソート
 max_rows = len(sorted_attack_df)
 
 #--スライダ設定
@@ -150,11 +150,11 @@ else:
 
 #--選択されたレコードを表示
 #--見出し：アプローチするHOT見込み客抽出--
-st.markdown('''### 2.アプローチするHOT見込み客選択''')
-st.markdown(f"**選択されたアプローチするHOT見込み客: <span style='color:red; text-decoration: underline;'>HOT率上位{start_rank}から{end_rank}まで</span>**", unsafe_allow_html=True)
+st.markdown('''### 2.アプローチするHOT見込み客選択 :busts_in_silhouette:''')
+st.markdown(f"**選択されたアプローチするHOT見込み客: <span style='color:red; text-decoration: underline;'>HOT予測確率上位{start_rank}から{end_rank}まで</span>**", unsafe_allow_html=True)
 st.markdown(f"**該当リード数: <span style='color:red; text-decoration: underline;'>{len(df_attack)}</span>人**", unsafe_allow_html=True)
-selected_columns_df = df_attack[["HOT率", "企業名", "姓", "名", "都道府県", "市区町村"]] # 表示項目を選択
-sorted_df = selected_columns_df.sort_values(by = "HOT率", ascending = False) # HOT率で降順ソート
+selected_columns_df = df_attack[["HOT予測確率", "企業名", "姓", "名", "都道府県", "市区町村"]] # 表示項目を選択
+sorted_df = selected_columns_df.sort_values(by = "HOT予測確率", ascending = False) # HOT予測確率で降順ソート
 st.dataframe(sorted_df)
 
 #--アプローチルート表示--
@@ -223,7 +223,7 @@ def solve_tsp(distance_matrix):
 
 # --- Streamlit アプリケーションの開始 ---
 def main_app_logic(): # main関数名を変更し、ボタンクリック後に呼び出すようにする
-    st.markdown('''### 3.最短アプローチルートを確認''')
+    st.markdown('''### 3.最短アプローチルートを確認 :world_map:''')
 
     # ここから修正
     # 「最適なアプローチルートを計算する」ボタンを配置

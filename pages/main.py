@@ -102,7 +102,7 @@ st.title("インサイドセールスアシスト")
 
 #--ファイルのアップロード--
 #--見出し：リストのアップロード--
-st.markdown('''### 1.推定用リストのアップロード''')
+st.markdown('''### 1.推定用リストのアップロード :page_facing_up:''')
 
 df_hot_lead = None
 model = None
@@ -207,7 +207,7 @@ else:
 if st.session_state.df_encoded is not None:
     #--推定--
     #--見出し：HOT見込み客の推定--
-    st.markdown('''### 2.HOT見込み客を推定''')
+    st.markdown('''### 2.HOT見込み客を推定 :dart:''')
 
     #--推定処理--
     if st.button("HOT見込み客の推定を実行"):
@@ -234,17 +234,17 @@ if st.session_state.df_encoded is not None:
             #--推定結果をdfに反映--
             #--元データを変更しないよう、df_hot_leadにコピー--
             st.session_state.df_hot_lead = st.session_state.df_master.copy() # df_masterからコピー
-            #--df_hot_leadにHOT判定とHOT率を追加する前に、結合対象のdf_masterのインデックスと一致しているか確認--
+            #--df_hot_leadにHOT判定とHOT予測確率を追加する前に、結合対象のdf_masterのインデックスと一致しているか確認--
             if len(st.session_state.df_hot_lead) == len(predictions):
                 st.session_state.df_hot_lead["HOT判定"] = predictions
-                st.session_state.df_hot_lead["HOT率"] = probabilities
+                st.session_state.df_hot_lead["HOT予測確率"] = probabilities
             else:
                 st.error("HOT判定結果の行数と元のデータ行数が一致しません。")
 
             #--推定結果の表示--
             st.subheader("HOT見込み客の推定結果")
             st.success("HOT見込み客の推定が完了しました")
-            selected_columns_hot_lead = ["id","HOT判定", "HOT率", "姓", "名", "企業名", "所属部署", "役職"] # 表示する列を指定
+            selected_columns_hot_lead = ["id","HOT判定", "HOT予測確率", "姓", "名", "企業名", "所属部署", "役職"] # 表示する列を指定
             st.dataframe(st.session_state.df_hot_lead[selected_columns_hot_lead].head())
         else:
             st.warning("モデル読み込みエラー、またはファイルがアップロードされていません。")
@@ -254,7 +254,7 @@ if st.session_state.df_encoded is not None:
 #--df_encodedとdf_hot_leadが存在する場合処理を実行--
 if st.session_state.df_encoded is not None and st.session_state.df_hot_lead is not None:
     #--見出し：HOT見込み客のペルソナ生成--
-    st.markdown('''### 3.HOT見込み客のペルソナを生成''')
+    st.markdown('''### 3.HOT見込み客のペルソナを生成 :face_in_clouds:''')
 
     #--クラスター数の選択--
     persona_num = st.slider("生成したいペルソナ数を設定", 2, 5, 3)
@@ -365,7 +365,7 @@ if st.session_state.df_encoded is not None and st.session_state.df_hot_lead is n
                         st.success("ペルソナ像の生成とDataFrameへの追加が完了しました。")
                         
                         # ペルソナ像を含む最終的なDataFrameの表示
-                        selected_columns_persona = ["id", "HOT判定", "HOT率", "persona", "ペルソナ像", "姓", "名", "企業名", "所属部署", "役職"] # 表示する列を指定
+                        selected_columns_persona = ["id", "HOT判定", "HOT予測確率", "persona", "ペルソナ像", "姓", "名", "企業名", "所属部署", "役職"] # 表示する列を指定
                         st.dataframe(st.session_state.df_hot_lead[selected_columns_persona].head())
                     else:
                         st.error("ペルソナ列が見つかりません。ペルソナ像の追加をスキップします。")
@@ -387,7 +387,7 @@ if (
     and "ペルソナ像" in st.session_state.df_hot_lead.columns
 ):
     #--見出し：トークスクリプト生成--
-    st.markdown('''### 4.各ペルソナへのトークスクリプトを生成''')
+    st.markdown('''### 4.各ペルソナへのトークスクリプトを生成 :speech_balloon:''')
 
     # 「提案する商材」のURL設定フォーム
     product_url = st.text_input(
@@ -485,7 +485,7 @@ if (
                 final_display_cols_with_talk_script = [
                     "id",
                     "HOT判定",
-                    "HOT率",
+                    "HOT予測確率",
                     "persona",
                     "ペルソナ像",
                     "トークスクリプト",
@@ -494,7 +494,7 @@ if (
                     for col in original_display_cols
                     if col
                     in st.session_state.df_hot_lead.columns
-                    and col not in ["id", "HOT判定", "HOT率", "persona", "ペルソナ像"]
+                    and col not in ["id", "HOT判定", "HOT予測確率", "persona", "ペルソナ像"]
                 ]
                 st.dataframe(
                     st.session_state.df_hot_lead[
