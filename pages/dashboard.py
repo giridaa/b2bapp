@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
-import japanize_matplotlib
+#import japanize_matplotlib
 import seaborn as sns
 import folium
 from ortools.constraint_solver import routing_enums_pb2
