@@ -12,7 +12,7 @@ from ortools.constraint_solver import pywrapcp
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 import time # 処理時間計測用
-st.set_page_config(layout="centered", page_title="ダッシュボード")
+st.set_page_config(layout="centered", page_title="セールスアプリ")
 #--------------------------------------------------
 
 #--HOT見込み客CSV読み込み--
