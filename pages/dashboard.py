@@ -16,13 +16,13 @@ st.set_page_config(layout="centered", page_title="セールスアプリ")
 #--------------------------------------------------
 
 #--HOT見込み客CSV読み込み--
-csv_file_name = "hot_lead.csv"
+csv_file_name = "pages/hot_lead.csv"
 
 #--CSVファイルをDataFrameとして読み込み
 try:
-    df =pd.read_csv("hot_lead.csv")
+    df =pd.read_csv("pages/hot_lead.csv")
 except FileNotFoundError:
-    st.error(f"エラー: '{hot_lead.csv}'が見つかりません")
+    st.error(f"エラー: '{pages/hot_lead.csv}'が見つかりません")
     st.stop()
 except Exception as e:
     st.error(f"ファイル読み込みエラー: {e}")
