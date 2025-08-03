@@ -524,6 +524,9 @@ if (
                 )
                 st.success("CSVの利用が可能です")
 
+                st.markdown("---")
+                st.page_link("pages/dashboard.py", label="生成したリストをダッシュボードで分析する", icon="📊")
+
             else:
                 st.error("ペルソナ列が見つかりません。トークスクリプトの追加をスキップします。")
 #else:
