@@ -11,3 +11,4 @@ protobuf==6.31.1
 scikit_learn==1.7.1
 seaborn==0.13.2
 streamlit==1.45.0
+google-generativeai
